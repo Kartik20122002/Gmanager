@@ -8,8 +8,7 @@ const base64 = require("../base64topdf/index");
 const fs = require("fs");
 const session = require("express-session");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const { Dburl,clientId , clientSecret , secret, redirectUri} = require("../secrets")
 const methodoverride = require("method-override");
 const ExpressError = require("../utils/expressError");
 const asyncError = require("../utils/asyncError");
@@ -23,14 +22,16 @@ const path = require("path");
 router.use(
   session({
     store: MongoStore.create({
-      mongoUrl: process.env.dburl,
-      touchAfter: 24 * 3600,
+      mongoUrl: Dburl,
+      touchAfter: 24 * 3600 * 1000,
+      
     }),
-    secret: process.env.secret,
+    secret: secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
       httpsOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 30,
     },
   })
 );
@@ -46,8 +47,10 @@ router.use((req, res, next) => {
 //middleware
 const isLoggedIn = (req, res, next) => {
   if (req.user) {
+      console.log("Logged in")
     next();
   } else {
+    console.log("Not logged in")
     res.status(401).redirect("/");
   }
 };
@@ -66,9 +69,9 @@ passport.deserializeUser(function (id, done) {
 passport.use(
   new GoogleStrategy(
     {
-      clientID: GOOGLE_CLIENT_ID,
-      clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://gmanager.onrender.com/profile",
+      clientID: clientId,
+      clientSecret: clientSecret,
+      callbackURL: redirectUri,
     },
     async function (accessToken, refreshToken, profile, done) {
       user.findOne({ googleId: profile.id }).then((currentUser) => {
@@ -105,6 +108,7 @@ router.use(passport.session());
 router.get("/", (req, res) => {
   res.render("home");
 });
+
 router.post(
   "/login",
   passport.authenticate("google", {
@@ -115,6 +119,8 @@ router.post(
     ],
   })
 );
+
+
 
 router.get(
   "/profile",
@@ -599,18 +605,19 @@ router.get(
   "/:id/signout",
   asyncError(async (req, res, next) => {
     const { id } = req.params;
-    const userdata = await user.findOne({ email: req.user.email });
+    console.log("signout", {secret})
+    const userdata = await user.findOne({ email: req?.user?.email });
 
-    fs.readdir(`public/pdfs/${req.user.email}`, async (err, files) => {
+    fs.readdir(`public/pdfs/${req?.user?.email}`, async (err, files) => {
       if (err) {
         req.logout();
         res.send("logout");
       } else {
         for (const file of files) {
-          await fs.unlink(`public/pdfs/${req.user.email}/` + file);
+          await fs.unlink(`public/pdfs/${req?.user?.email}/` + file);
         }
-        fs.rmdir(`public/pdfs/${req.user.email}`);
-        const token = req.cookies.token;
+        fs.rmdir(`public/pdfs/${req?.user?.email}`);
+        const token = req?.cookies?.token;
         req.logout();
         req.session.destroy();
         res.send("logout");
@@ -626,6 +633,7 @@ router.get("/google81d34312975a22ba.html", (req, res) => {
 });
 //if any other route
 router.get("*", (req, res, next) => {
+  console.log("*", req.originalUrl)
   next(new ExpressError("Page not found", 404));
 });
 //adding error handler
