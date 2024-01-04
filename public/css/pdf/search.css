@@ -7,10 +7,33 @@
     margin : auto auto;
     border: 2px inherit solid;
     background-color: #FAFAFA;
+    transition: all .3s linear;
+}
+
+.containerform input , .containerform .input-group-text {
+    transition: all .3s linear;
+}
+.containerform .input-group:hover input{
+    border-radius: 30px;
+}
+.containerform .input-group:hover .input-group-text{
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px ;
 }
 .searchButton{
-    margin: 0 auto;
+    border: none;
+    outline: none;
+    color: white;
+    padding: .3rem .9rem;
+    background-color: #3559E0;
+    border-radius: 6px;
+    transition: all .3s linear;
+    }
+
+.searchButton:hover{
+    border-radius: 20px;
 }
+
 @media (max-width: 768px) {
     .containerform{
         padding-top: 0.5em;

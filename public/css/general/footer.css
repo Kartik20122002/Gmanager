@@ -1,16 +1,18 @@
 footer{
     margin-top:auto;
     width: 100%;
-    background-color: #E63946;
+    background-color: black;
     padding-top : 0.2em;
 }
 
 .icons a:hover{
-    color: #A8DADC
+    transform: scale(1.1);
+
     }
     .icons a{
         color: white;
         margin : 0.2em;
+        transition: all ease-in-out;
     }
     .icons{
         display: flex;
@@ -21,6 +23,7 @@ footer{
         justify-content: center;
         color: white;
         font-size: 0.8em;
+        font-weight: 500;
     }
 
     

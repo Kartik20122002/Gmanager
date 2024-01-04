@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon -e ejs,js,css"
   },
   "author": "Kartik Hatwar",
   "license": "ISC",
@@ -29,6 +29,7 @@
     "method-override": "^3.0.0",
     "mongoose": "^6.0.9",
     "nodemon": "^3.0.2",
+    "npm": "^10.2.5",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0"
   }

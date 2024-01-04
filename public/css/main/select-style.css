@@ -139,18 +139,20 @@ h1{
 }
 
 /* styling logout */
-.logout{
-  background-color: #A8DADC;
-  border: 0;
-
-  font-size: 1.2em;
-  
-  padding:0.3em;
-  transition: all 0.2s linear;
-}
-.logout:hover{
-  background-color: #457B9D;
+.logout.btn {
   color: white;
+  background-color: red;
+  border-radius: 7px;
+  font-size: 1.2em;
+  padding: .2rem .7em;
+  width: 8rem;
+  transition: all 0.7s linear;
+}
+
+.logout.btn:hover {
+  border-radius: 50px;
+  background-color: red;
+  color: white !important;
 }
 
 .navbar-nav-logout{

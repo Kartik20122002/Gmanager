@@ -9,15 +9,24 @@ body{
     flex-direction: column;
 }
 .navbar{
-    background-color: #E63946;
+    background-color: white;
+-webkit-box-shadow: 0px 10px 74px -14px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 10px 74px -14px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 10px 74px -14px rgba(0, 0, 0, 0.4);
 }
+.navbar-nav .nav-link , .navbar-nav .nav-link:active{
+    color: black!important;
+}
+
 #brandName{
-    color : #E63946;
+    color : black;
     font-weight: 500;
 }
+
 .navbar-brand{
     font-weight: 900;
     font-size: 1.3em;
+    color: black!important;
 }
 /* modal css */
 .modal-close{

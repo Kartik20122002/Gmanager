@@ -26,7 +26,7 @@ router.use(
       touchAfter: 24 * 3600 * 1000,
       
     }),
-    secret: secret,
+    secret: 'kartiksecret',
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -46,8 +46,9 @@ router.use((req, res, next) => {
 
 //middleware
 const isLoggedIn = (req, res, next) => {
+  console.log(req?.user);
   if (req.user) {
-      console.log("Logged in")
+    console.log("Logged in\n\n")
     next();
   } else {
     console.log("Not logged in")
@@ -77,11 +78,7 @@ passport.use(
       user.findOne({ googleId: profile.id }).then((currentUser) => {
         if (currentUser) {
           user
-            .findOneAndUpdate(
-              { googleId: profile.id },
-              { access_token: accessToken },
-              { new: true }
-            )
+            .findOneAndUpdate({ googleId: profile.id },{ access_token: accessToken },{ new: true })
             .then((updatedUser) => {
               done(null, updatedUser);
             });
@@ -106,11 +103,11 @@ router.use(passport.initialize());
 router.use(passport.session());
 
 router.get("/", (req, res) => {
+  console.log("Home Request\n\n")
   res.render("home");
 });
 
-router.post(
-  "/login",
+router.post("/login",
   passport.authenticate("google", {
     scope: [
       "profile",
@@ -120,29 +117,28 @@ router.post(
   })
 );
 
-
-
-router.get(
-  "/profile",
+router.get("/profile",
+  
   passport.authenticate("google", { failureRedirect: "/" }),
   function (req, res) {
+    console.log("Successful authentication, redirect home\n\n");
     // Successful authentication, redirect home.
     res.redirect("/userprofile");
   }
 );
 
-router.get(
-  "/userprofile",
+router.get("/userprofile",
+  
   isLoggedIn,
   asyncError(async (req, res, next) => {
+    console.log("User profile Page Visiting\n\n");
     const userFind = await user.findOne({ email: req.user.email });
-
-    res.render("profile", { userFind });
+    if (userFind) res.render('profile', { userFind });
+    else res.redirect('/');
   })
 );
 
-router.get(
-  "/:id/fill",
+router.get("/:id/fill",
   isLoggedIn,
   asyncError(async (req, res, next) => {
     const { id } = req.params;
@@ -151,8 +147,7 @@ router.get(
   })
 );
 
-router.post(
-  "/:id/fill",
+router.post("/:id/fill",
   isLoggedIn,
   asyncError(async (req, res, next) => {
     //trying to make array input
@@ -214,8 +209,7 @@ router.post(
   })
 );
 
-router.get(
-  "/:id/allfolder",
+router.get("/:id/allfolder",
   isLoggedIn,
   asyncError(async (req, res, next) => {
     const userFind = await user.findById(req.params.id);
@@ -223,8 +217,7 @@ router.get(
   })
 );
 
-router.get(
-  "/getprofile",
+router.get("/getprofile",
   isLoggedIn,
   asyncError(async (req, res, next) => {
     const doc = await user.find({ email: req.user.email });
@@ -259,8 +252,7 @@ var decode = function (input) {
 var data = [];
 var messages = [];
 
-router.post(
-  "/search",
+router.post("/search",
   isLoggedIn,
   asyncError(async (req, res, next) => {
     doc = await user.find({ email: req.user.email });
@@ -316,8 +308,7 @@ router.post(
   })
 );
 
-router.get(
-  "/search",
+router.get("/search",
   isLoggedIn,
   asyncError(async (req, res, next) => {
     const id = req.user.id;
@@ -325,8 +316,8 @@ router.get(
     res.render("search", { userFind });
   })
 );
-router.post(
-  "/:id/sendme",
+
+router.post("/:id/sendme",
   isLoggedIn,
   asyncError(async (req, res, next) => {
     const { id } = req.params;
@@ -373,8 +364,7 @@ router.post(
 );
 
 //getting next page
-router.post(
-  "/:id/nextpage",
+router.post("/:id/nextpage",
   isLoggedIn,
   asyncError(async (req, res, next) => {
     let { nextPageToken } = req.body;
@@ -422,8 +412,7 @@ router.post(
 );
 
 var folderName = null;
-router.post(
-  "/:id/search/:email",
+router.post("/:id/search/:email",
   isLoggedIn,
   asyncError(async (req, res, next) => {
     const { id, email } = req.params;
@@ -480,8 +469,7 @@ router.post(
   })
 );
 
-router.get(
-  "/:id/:search/pdf",
+router.get("/:id/:search/pdf",
   isLoggedIn,
   asyncError(async (req, res, next) => {
     const { id, search: searchemail } = req.params;
@@ -503,9 +491,7 @@ router.get(
 
 var database64;
 
-const fileNameCreated = [];
-router.post(
-  "/finddata",
+router.post("/finddata",
   isLoggedIn,
   asyncError(async (req, res, next) => {
     const doc = await user.find({ email: req.user.email });
@@ -537,8 +523,7 @@ router.post(
 //email and subject and name
 
 //edit and delete routes
-router.get(
-  "/:userid/:inputid/edit",
+router.get("/:userid/:inputid/edit",
   isLoggedIn,
   asyncError(async (req, res, next) => {
     const { userid, inputid } = req.params;
@@ -552,8 +537,7 @@ router.get(
 );
 
 //delete request
-router.delete(
-  "/:id/:inputid/delete",
+router.delete("/:id/:inputid/delete",
   asyncError(async (req, res, next) => {
     const { id, inputid } = req.params;
     const userFind = await user.findById(id);
@@ -564,8 +548,7 @@ router.delete(
   })
 );
 //put request for form edit
-router.put(
-  "/:inputid/edit",
+router.put("/:inputid/edit",
   asyncError(async (req, res, next) => {
     //joi validate
     joiValidate(req);
@@ -601,27 +584,33 @@ router.put(
   })
 );
 
-router.get(
-  "/:id/signout",
+router.get( "/:id/signout",
   asyncError(async (req, res, next) => {
-    const { id } = req.params;
-    console.log("signout", {secret})
-    const userdata = await user.findOne({ email: req?.user?.email });
-
-    fs.readdir(`public/pdfs/${req?.user?.email}`, async (err, files) => {
-      if (err) {
+    console.log(req.cookies);
+    console.log(req.session);
+    console.log("\tSignout Called\n")
+    
+    // const userdata = await user.findOne({ email: req?.user?.email });
+    fs.readdir(`./public/pdfs/${req?.user?.email}`, (err, files) => {
+      const fun = async () => {
+        if (err) {
+        // console.log("fread  ",err)
         req.logout();
-        res.send("logout");
+          res.send("logout");
       } else {
-        for (const file of files) {
-          await fs.unlink(`public/pdfs/${req?.user?.email}/` + file);
-        }
-        fs.rmdir(`public/pdfs/${req?.user?.email}`);
-        const token = req?.cookies?.token;
+          files.forEach((file) => {
+            fs.unlinkSync(`./public/pdfs/${req?.user?.email}/` + file)
+          });
+          fs.rmdir(`public/pdfs/${req?.user?.email}`, () => {
+          console.log('Directory Removed')
+        });
+        // const token = req?.cookies?.token;
         req.logout();
         req.session.destroy();
         res.send("logout");
       }
+      }
+      fun();
     });
   })
 );
