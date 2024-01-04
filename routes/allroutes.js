@@ -31,7 +31,7 @@ router.use(
     saveUninitialized: true,
     cookie: {
       httpsOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 30,
+      maxAge: 1000 * 60 * 60 * 24 + Date.now(),
     },
   })
 );
@@ -46,7 +46,6 @@ router.use((req, res, next) => {
 
 //middleware
 const isLoggedIn = (req, res, next) => {
-  console.log(req?.user);
   if (req.user) {
     console.log("Logged in\n\n")
     next();
@@ -232,6 +231,7 @@ router.get("/getprofile",
 router.get("/message", isLoggedIn, (req, res) => {
   res.render("message", { data: null });
 });
+
 var decode = function (input) {
   // Replace non-url compatible chars with base64 standard chars
   input = input.replace(/-/g, "+").replace(/_/g, "/");
@@ -586,20 +586,21 @@ router.put("/:inputid/edit",
 
 router.get( "/:id/signout",
   asyncError(async (req, res, next) => {
-    console.log(req.cookies);
-    console.log(req.session);
+    // console.log(req.cookies);
+    // console.log(req.session);
     console.log("\tSignout Called\n")
+    console.log(req?.get('host'));
     
     // const userdata = await user.findOne({ email: req?.user?.email });
-    fs.readdir(`./public/pdfs/${req?.user?.email}`, (err, files) => {
+    fs.readdir(`public/pdfs/${req?.user?.email}`, (err, files) => {
       const fun = async () => {
         if (err) {
-        // console.log("fread  ",err)
+        console.log("fread  ",err)
         req.logout();
           res.send("logout");
       } else {
           files.forEach((file) => {
-            fs.unlinkSync(`./public/pdfs/${req?.user?.email}/` + file)
+            fs.unlinkSync(`public/pdfs/${req?.user?.email}/` + file)
           });
           fs.rmdir(`public/pdfs/${req?.user?.email}`, () => {
           console.log('Directory Removed')
