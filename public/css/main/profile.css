@@ -1,21 +1,4 @@
-.logout.btn{
-    color: white;
-    background-color: red;
-    border-radius: 7px;
-    font-size: 1.2em;
-    padding:.2rem .7em;
-    width: 8rem;
-    transition: all 0.7s linear;
-}
-.logout.btn:hover{
-    border-radius: 50px;
-    background-color: red;
-    color: white!important;
-}
-.navbar-nav{
-    margin-left: auto;
-    border-color: #E63946;
-}
+
 .card{
     transition: all .4s ease;
     cursor: pointer;

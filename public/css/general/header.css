@@ -48,3 +48,22 @@ body{
     height: 1em;
     margin-left: 0.3em;
 }
+
+.navbar-nav-logout{
+    margin-left: auto!important;
+}
+
+.logout.btn{
+    color: white;
+    background-color: red;
+    border-radius: 7px;
+    font-size: 1.2em;
+    padding:.2rem .7em;
+    width: 8rem;
+    transition: all 0.7s linear;
+}
+.logout.btn:hover{
+    border-radius: 50px;
+    background-color: red;
+    color: white!important;
+}
