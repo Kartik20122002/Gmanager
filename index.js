@@ -23,7 +23,7 @@ mongoose.set('strictQuery', false);
 
 try {
     const fun = async () => {
-        await mongoose.connect(Dburl);
+    mongoose.connect(Dburl);
         
     app.listen(PORT,(req,res)=>{
         console.log(`http://localhost:${PORT}`);
