@@ -1,58 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="google-signin-client_id"
-      content="124401388339-qsdjccd2lc6sraniaoup7u0dm77ub8rf.apps.googleusercontent.com"
-    />
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <%- include('partials/bootstrap.ejs') %>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-signin-client_id"
+    content="124401388339-qsdjccd2lc6sraniaoup7u0dm77ub8rf.apps.googleusercontent.com" />
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <%- include('partials/bootstrap.ejs') %>
 
     <title>Gmanager</title>
     <link rel="stylesheet" href="css/general/footer.css" />
     <link rel="stylesheet" href="css/main/home.css" />
     <link rel="stylesheet" href="css/general/header.css" />
-  </head>
+</head>
 
-  <body class="d-flex flex-column">
-    <nav class="navbar shadow sticky-top navbar-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand mx-auto" href="/">Gmanager</a>
+<body class="d-flex flex-column">
+  <nav class="navbar shadow sticky-top navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand mx-auto" href="/">Gmanager</a>
+    </div>
+  </nav>
+
+  <main class="flex-fill d-flex align-items-center bglex-fill-i3nfo flex-column justify-content-center ">
+    <div class="flex-fill md-75 px-3 py-2 align-items-center bg-white d-flex flex-column">
+
+      <div class="typewriter my-3 py-2">
+        <h2 class="text-center text-bg-dark fw-bold">Welcome User!</h2>
       </div>
-    </nav>
-    
-    <main class="flex-fill d-flex align-items-center bglex-fill-i3nfo flex-column justify-content-center ">
-        <div class="flex-fill md-75 px-3 py-2 align-items-center bg-white d-flex flex-column">
 
-            <div class="typewriter my-3 py-2">
-              <h2 class="text-center text-bg-dark fw-bold">Welcome User!</h2>
-            </div>
+      <p class="my-3 py-1">
+        <span id="brandName">Gmanager</span>
+        helps you to manage your Gmail attachments(pdf) systematically and segregate them according
+        to your wish. Quickly access any pdf you wish. No need to search
+        mail and attachment every time on your Gmail, rather this website
+        stores all the pdf of every email you specify under each folder
+        you wish.Just signIn through your gmail account to which you
+        recieve those attachments and give permissions to read the mail
+        when first time signIn.We will never access your documents.
+      </p>
 
-            <p class="my-3 py-1">
-              <span id="brandName">Gmanager</span>
-              helps you to manage your
-              Gmail attachments(pdf) systematically and segregate them according
-              to your wish. Quickly access any pdf you wish. No need to search
-              mail and attachment every time on your Gmail, rather this website
-              stores all the pdf of every email you specify under each folder
-              you wish.Just signIn through your gmail account to which you
-              recieve those attachments and give permissions to read the mail
-              when first time signIn.We will never access your documents.
-            </p>
+      <!-- <h1 class="text-center mt-lg-2 ">SignIn Here</h1> -->
+      <form action="/login" class="mt-md-2 " method="post">
+        <button class="signIn mx-auto" style="display: block">
+          <img class="hover-shadow" src="google_signin_buttons/web/2x/btn_google_signin_dark_normal_web@2x.png" />
+        </button>
+      </form>
 
-            <!-- <h1 class="text-center mt-lg-2 ">SignIn Here</h1> -->
-            <form action="/login" class="mt-md-2 " method="post">
-              <button class="signIn mx-auto" style="display: block">
-                <img class="hover-shadow" src="google_signin_buttons/web/2x/btn_google_signin_light_normal_web@2x.png"/>
-              </button>
-            </form>
-
-        </div>
-    </main>
-    <%- include('partials/footer.ejs') %> 
+    </div>
+  </main>
+  <%- include('partials/footer.ejs') %>
     <%-include('partials/bootstrapjs.ejs') %>
-  </body>
+</body>
+
 </html>

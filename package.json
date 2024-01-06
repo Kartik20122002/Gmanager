@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "nodemon": "nodemon -e ejs,js,css"
   },
   "author": "Kartik Hatwar",
   "license": "ISC",

@@ -16,6 +16,7 @@ const Joi = require("joi");
 const flash = require("connect-flash");
 const MongoStore = require("connect-mongo");
 const path = require("path");
+const { connect } = require("mongoose");
 //mongo session store
 
 //configuring session
@@ -31,7 +32,7 @@ router.use(
     saveUninitialized: true,
     cookie: {
       httpsOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 + Date.now(),
+      maxAge: 24 * 3600 * 1000 + Date.now(),
     },
   })
 );
@@ -47,10 +48,8 @@ router.use((req, res, next) => {
 //middleware
 const isLoggedIn = (req, res, next) => {
   if (req.user) {
-    console.log("Logged in\n\n")
     next();
   } else {
-    console.log("Not logged in")
     res.status(401).redirect("/");
   }
 };
@@ -74,6 +73,7 @@ passport.use(
       callbackURL: redirectUri,
     },
     async function (accessToken, refreshToken, profile, done) {
+      await connect(Dburl);
       user.findOne({ googleId: profile.id }).then((currentUser) => {
         if (currentUser) {
           user

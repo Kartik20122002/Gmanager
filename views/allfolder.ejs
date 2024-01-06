@@ -15,25 +15,7 @@
 </head>
 <body>
  <!-- navbar -->
- <nav class="navbar navbar-expand-md sticky-top navbar-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/userprofile">Gmanager</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a href="/search"  class="nav-link">Search Mail</a></li>
-          <li class="nav-item"><a href="/<%= userFind._id %>/fill" class="nav-link ">Manage Folders</a></li>
-          <li class="nav-item"><a href="" class="nav-link active disabled">All Folders</a></li>
-        </ul>
-        <div class="navbar-nav-logout">
-          <button class='logout btn'>Logout</button>
-        </div>
-      </div>
-    </div>
-  </nav>
+ <%- include('partials/nav.ejs') %>
 
   <!-- /navbar -->
   
@@ -43,26 +25,23 @@
   </div>
 <div class="container mx-auto my-auto">
     <% if(userFind.input.length!=0) {%> 
-        <div class="row">
+
+        <div class="folderTitle">All Folders</div>
+
+        <div class="folderContainer">
         <% for(let i = 0;i<userFind.input.length;i++) {%>
-                <!-- <div class="col-md-3 col-1 col-sm-2 folder">
-                    <a href="/<%=userFind._id%>/search/<%=userFind.input[i].searchEmail%>"><%= userFind.input[i].name  %></a>
-                </div> -->
-                <div class="divs  col-md-4 col-6 col-sm-6 p-1 <% if(userFind.input.length == 1){ %>mx-auto<% } %> <% if(userFind.input.length == 2){ %>col-lg-6 pl-auto<% }else if(userFind.input.length == 3){%>col-lg-4 <%}else{ %>col-lg-3<%} %>">
-                    <form action="/<%=userFind._id%>/search/<%=userFind.input[i].searchEmail%>" class='folderform' method="post" >
-                       <div class="folder">
-                        <button type='submit' class = 'btn'><span id='name<%= i %>' class='buttonName'><%= userFind.input[i].name  %></span> 
-                            <div class="d-flex justify-content-center"><span id="spinner<%= i %>" class="spinner-grow spinner-border-lg" role="status" style = "display: none;"aria-hidden="true"></span>
-                            </div></button>
-                       </div>
-                      
-                    </form>
-                </div>
-                
-            
+
+            <div class="folderItem">
+                <form action="/<%=userFind._id%>/search/<%=userFind.input[i].searchEmail%>" class='folderform' method="post" >
+                    <button type='submit' class = 'btn folderfile'>
+                        <span id='name<%= i %>' class='buttonName'><%= userFind.input[i].name  %></span> 
+                    </button>
+                </form>
+            </div>
            
-            <% } %> 
+        <% } %> 
         </div>
+
         <% }else { %>
           <div class="no-folder mt-3 pt-2 d-flex justify-content-center">
             <div class="nofoldericon"><svg xmlns="http://www.w3.org/2000/svg" width="5.5em" height="5.5em" fill="red" class="bi bi-folder2-open" viewBox="0 0 16 16">
