@@ -261,11 +261,15 @@ router.post("/search",
     messages = [];
     data = [];
     const promises = [];
+    console.log({searchemail,access_token})
     var i;
     const apires = await axios.get(
       `https://gmail.googleapis.com/gmail/v1/users/me/messages?q=from:${searchemail}%20has:attachment&access_token=${access_token}`
     );
     if (apires.data.messages) {
+
+      console.log(apires.data.messages)
+
       for (i = 0; i < apires.data.messages.length; i++) {
         message_id = apires.data.messages[i].id;
 
@@ -275,8 +279,9 @@ router.post("/search",
         );
       }
 
-      Promise.all(promises).then((resolve) => {
-        resolve.forEach((attachmentres) => {
+        const PromiseRes = await Promise.all(promises)
+
+        PromiseRes?.forEach((attachmentres) => {
           attachmentres.data.payload.parts.forEach((doc) => {
             if (doc.mimeType == "application/pdf") {
               let daterec = null;
@@ -299,12 +304,11 @@ router.post("/search",
               messages.push(message);
             }
           });
-        });
-
-        return res.send(req.user.id);
       });
+
+      return res.send(req.user.id);
+     
     }
-    return res.send(req.user.id);
   })
 );
 
@@ -457,6 +461,7 @@ router.post("/:id/search/:email",
               message.date = daterec;
 
               messages.push(message);
+              console.log({messages})
             }
           });
         });

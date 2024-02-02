@@ -22,15 +22,14 @@ app.use(router);
 mongoose.set('strictQuery', false);
 
 try {
-    const fun = async () => {
-    mongoose.connect(Dburl);
-        
-    app.listen(PORT,(req,res)=>{
-        console.log(`http://localhost:${PORT}`);
-    });
-    }
-
-    fun();
+    mongoose.connect(Dburl).then(()=>{
+        console.log("Connected");
+        app.listen(PORT,(req,res)=>{
+            console.log(`http://localhost:${PORT}`);
+        });
+    }).catch((err)=>{
+        console.log("\nnot connectec\n",err);
+    })
     
 }
 catch (err) {
